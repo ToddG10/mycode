@@ -4,7 +4,7 @@
   become: true
 
   vars_files:
-    - ../vars/tues_challenge_names.yml
+    - ~/mycode/vars/tues_challenge_names.yml
 
   tasks:
 
