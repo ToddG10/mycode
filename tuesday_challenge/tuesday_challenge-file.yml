@@ -1,0 +1,17 @@
+---
+- name: tuesday_challenge
+  hosts: localhost
+  connection: local
+
+  vars:
+    # the variable "st" is mapped to "directory"
+    st: directory
+
+
+  tasks:
+  - name: "Create directory "
+    become_user: root
+    become: true
+    ansible.builtin.file:
+      path: "/home/tuesday_challenge/"
+      mode: "0744"  

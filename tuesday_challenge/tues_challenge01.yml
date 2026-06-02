@@ -1,0 +1,33 @@
+---
+- name: Tuesday Challenge
+  hosts: planetexpress
+  become: true
+
+  vars_files:
+    - ../vars/tues_challenge_names.yml
+
+  tasks:
+
+    - name: Create groups matching names in variable file
+      group:
+        name: "{{ item }}"
+        state: present
+      loop: "{{ tuesday }}"
+
+    - name: Create users matching names in variable file
+      user:
+        name: "{{ item }}"
+        group: "{{ item }}"
+        state: present
+      loop: "{{ tuesday }}"
+
+    - name: Install figlet and steam locomotive
+      package:
+        name:
+          - figlet
+          - sl
+        state: present
+
+    - name: Display completion message
+      debug:
+        msg: "I've completed the challenge!"
