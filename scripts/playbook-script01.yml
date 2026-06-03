@@ -1,0 +1,18 @@
+---
+- name: Playbook that runs a Python script
+  hosts: localhost
+  connection: ansible.builtin.local
+  gather_facts: false
+
+  tasks:
+  - name: Copy script to target hosts and execute it
+    ansible.builtin.script: ~/mycode/scripts/nasaLookup.py
+    args:
+      executable: /usr/bin/python3
+    register: results    # save the JSON sent back by our script
+
+  - name: Print out the 'results'
+    ansible.builtin.debug:
+      var: results
+      # notice there is a stdout and stdout_lines
+
