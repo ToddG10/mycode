@@ -1,4 +1,15 @@
 ---
+#bash ~/px/scripts/full-setup.sh
+
+  #Part 1: In your vars directory create a file called "tues_challenge_names.yml"  Place three names of your choosing in a list with the key being "tuesday"
+
+  #Part 2: Create a directory inside mycode called "tuesday_challenge" Then make a "tues_challenge01.yml" file.
+
+  #Part 3: Create a playbook that targets the host group planetexpress. Have tasks that creates users and groups matching each name in "tues_challenge_names.yml" Have another task that installs figlet and steam locomotive on ALL machines (Hint: Look up the package module)
+
+  #Part 4: Create a third task that shows the message "I've completed the challenge!" in the output.
+
+
 - name: Tuesday Challenge
   hosts: planetexpress
   become: true
