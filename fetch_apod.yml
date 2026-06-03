@@ -1,0 +1,22 @@
+---
+- name: Fetch APOD data
+  hosts: localhost
+  tasks:
+    - name: Fetch APOD for a specific date
+      alta3.apod_tools.apod:
+        api_key: QWyxxXIUw5rvbYXeCCMv0NyhRJ3f0UL00S9XZfBf
+        date: "2026-06-02"
+      register: apod_result
+
+    - name: Display full APOD data
+      debug:
+        var: apod_result
+
+    - name: Display only the image URL
+      debug:
+        msg: "Image URL: {{ apod_result.apod_data[0].hdurl }}"
+
+    - name: Download the APOD image
+      ansible.builtin.get_url:
+        url: "{{ apod_result.apod_data[0].hdurl }}"
+        dest: /home/student/static/apod_image.jpg
