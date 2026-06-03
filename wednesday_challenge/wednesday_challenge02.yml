@@ -1,0 +1,41 @@
+---
+  #Part 1: Move into or create a directory in mycode called "wednesday_challenge". In the challenge directory create a playbook called "wednesday_challenge02.yml". Set the hosts key to target planetexpress but exclude Farnsworth.
+
+  #Part 2: Create a vars_prompt section that will ask the user a new name for a directory. Ask the user for confirmation for their answer and set a default answer to be "new_default". Feel free to include any other parameters.
+
+  #Part 3: Make a task that will create a new directory on the target machines, using the name chosen by the user being prompted. Set the mode against the directory to include all permissions: read, write, and execute. Make sure the directory is created in "/home/date_info/"
+
+  #Part 4: Make more tasks that will add a file to the new directory called "today.txt" containing today's date. Basically a timestamp (try running a date command on the CLI and using redirection).
+
+  #Part 5: Trust but verify! Make a final task that show the results of the contents of the "today.txt" file.
+
+
+- name: Wednesday Challenge
+  hosts: "planetexpress:!farnsworth"
+
+  vars_prompt:
+    - name: dirname
+      prompt: "Enter a new directory name"
+      private: no
+      confirm: yes
+      default: "new_default" 
+
+  tasks: 
+    - name: Create user directory
+      become: yes
+      ansible.builtin.file:       
+        path: "/home/date_info/{{ dirname }}"
+        state: directory
+        mode: "0777"
+  
+    - name: create today.txt with today's date
+      shell: "date > /home/date_info/{{ dirname }}/today.txt"
+
+    - name: Display contents of today.txt
+      become: yes
+      command: cat /home/date_info/{{ dirname }}/today.txt
+      register: today_output
+
+    - name: Show output in console
+      debug:
+         var: today_output.stdout
