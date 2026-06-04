@@ -1,0 +1,42 @@
+---
+- name: Install developer CLI tools
+  apt:
+    name: "{{ developer_tools }}"
+    state: present
+
+- name: Add local user to docker group
+  user:
+    name: "{{ local_user }}"
+    groups: docker
+    append: yes
+
+- name: Create directory for the Welcome API container
+  file:
+    path: /opt/welcome-api
+    state: directory
+    mode: '0755'
+
+- name: Create the Docker Compose file
+  copy:
+    dest: /opt/welcome-api/docker-compose.yml
+    content: |
+      services:
+        api:
+          image: nginx:alpine
+          restart: always
+          ports:
+            - "8088:80"
+          volumes:
+            - ./index.html:/usr/share/nginx/html/index.html:ro
+
+- name: Deploy the ASCII art payload
+  copy:
+    src: index.html
+    dest: /opt/welcome-api/index.html
+
+- name: Start the Welcome API container
+  command: docker compose up -d
+  args:
+    chdir: /opt/welcome-api
+  changed_when: false
+

@@ -1,0 +1,29 @@
+---
+- name: Deploy dynamic MOTD from template
+  template:
+    src: motd.j2
+    dest: /etc/motd
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Add bash aliases and container trigger to .bashrc
+  blockinfile:
+    path: "/home/{{ local_user }}/.bashrc"
+    block: |
+      alias ll='ls -lah'
+      alias gs='git status'
+      alias myip='curl -s [https://ifconfig.me](https://ifconfig.me)'
+      
+      # Hit the local Docker container on login
+      curl -s -m 2 http://localhost:8088
+    marker: "# {mark} ANSIBLE MANAGED ALIASES"
+
+- name: Copy health check script to bin
+  copy:
+    src: check-health.sh
+    dest: /usr/local/bin/check-health
+    owner: root
+    group: root
+    mode: '0755'
+

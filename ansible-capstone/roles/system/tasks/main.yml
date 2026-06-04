@@ -1,0 +1,26 @@
+---
+- name: Update apt cache
+  apt:
+    update_cache: yes
+    cache_valid_time: 3600
+
+- name: Set the system hostname
+  hostname:
+    name: "devops-node-{{ student_name }}"
+
+- name: Update /etc/hosts to resolve the new hostname
+  lineinfile:
+    path: /etc/hosts
+    regexp: '^127\.0\.1\.1'
+    line: "127.0.1.1 devops-node-{{ student_name }}"
+    state: present
+
+- name: Set system timezone
+  timezone:
+    name: "{{ system_timezone }}"
+
+- name: Install base system packages
+  apt:
+    name: "{{ base_packages }}"
+    state: present
+

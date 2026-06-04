@@ -1,0 +1,9 @@
+---
+- name: Capstone - DevOps Node Builder
+  hosts: localhost
+  become: true
+  roles:
+    - system
+    - tools
+    - env
+

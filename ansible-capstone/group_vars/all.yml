@@ -1,0 +1,17 @@
+---
+student_name: "Turing"
+local_user: "student"
+system_timezone: "UTC"
+base_packages:
+  - software-properties-common
+  - build-essential
+  - unzip
+  - curl
+developer_tools:
+  - git
+  - htop
+  - tree
+  - tmux
+  - vim
+  - docker-compose-v2
+
